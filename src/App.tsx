@@ -1,6 +1,6 @@
-import React from 'react'
+import { ReactElement } from 'react'
 
-function App() {
+function App(): ReactElement {
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-white shadow">
