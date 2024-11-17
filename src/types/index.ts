@@ -4,3 +4,10 @@ export interface User {
   email: string;
   role: string;
 }
+
+export interface NavigationItem {
+  name: string;
+  href: string;
+  icon?: string;
+  current?: boolean;
+}
