@@ -11,28 +11,38 @@ on:
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: >
+      github.event_name == 'push' || 
+      (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v3
+
+      # Set up Node.js environment
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
       
+      # Install dependencies
       - name: Install Dependencies
         run: npm install
       
+      # Run type checking
       - name: Type Check
         run: npm run type-check
       
+      # Lint the code
       - name: Lint
         run: npm run lint
       
+      # Run tests
       - name: Test
         run: npm run test
       
+      # Build the project
       - name: Build
         run: npm run build
         env:
@@ -40,6 +50,7 @@ jobs:
           VITE_AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
       
+      # Deploy to Azure Static Web Apps
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -57,6 +68,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Close Pull Request Job
     steps:
+      # Close pull request in Azure Static Web Apps
       - name: Close Pull Request
         uses: Azure/static-web-apps-deploy@v1
         with:
